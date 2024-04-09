@@ -31,10 +31,17 @@ func (p Particle) calculateBestVelocity(bestMatrix *mat.Dense, weightMatrix *mat
 	return BestVelocity
 }
 
-func (p Particle) calculatePBestVelocity() *mat.Dense {
+func (p Particle) calculatePersonalBestVelocity() *mat.Dense {
 	return p.calculateBestVelocity(p.personalBest, p.velocityWeight.personalBestVelocityWeight)
 }
 
-func (p Particle) calculateGBestVelocity() *mat.Dense {
+func (p Particle) calculateGlobalBestVelocity() *mat.Dense {
 	return p.calculateBestVelocity(p.globalBest, p.velocityWeight.globalBestVelocityWeight)
+}
+
+func (p Particle) calculateTotalVelocity() *mat.Dense {
+	totalVelocity := newDimensionDense(p.dimension, nil)
+	totalVelocity.Add(p.calculatePersonalBestVelocity(), p.calculateGlobalBestVelocity())
+	totalVelocity.Add(totalVelocity, p.velocity)
+	return totalVelocity
 }
