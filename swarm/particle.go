@@ -1,8 +1,11 @@
 package swarm
 
-import "gonum.org/v1/gonum/mat"
+import (
+	"gonum.org/v1/gonum/mat"
+)
 
 type Particle struct {
+	dimension      int
 	position       *mat.Dense
 	personalBest   *mat.Dense
 	globalBest     *mat.Dense
@@ -18,4 +21,20 @@ type VelocityWeight struct {
 
 func newDimensionDense(dimension int, data []float64) *mat.Dense {
 	return mat.NewDense(dimension, 1, data)
+}
+
+func (p Particle) calculateBestVelocity(bestMatrix *mat.Dense, weightMatrix *mat.Dense) *mat.Dense {
+	BestDistance := newDimensionDense(p.dimension, nil)
+	BestDistance.Sub(p.position, bestMatrix)
+	BestVelocity := newDimensionDense(p.dimension, nil)
+	BestVelocity.MulElem(BestDistance, weightMatrix)
+	return BestVelocity
+}
+
+func (p Particle) calculatePBestVelocity() *mat.Dense {
+	return p.calculateBestVelocity(p.personalBest, p.velocityWeight.personalBestVelocityWeight)
+}
+
+func (p Particle) calculateGBestVelocity() *mat.Dense {
+	return p.calculateBestVelocity(p.globalBest, p.velocityWeight.globalBestVelocityWeight)
 }
