@@ -1,25 +1,21 @@
 package swarm
 
-type dimensionValues []float64
+import "gonum.org/v1/gonum/mat"
 
 type Particle struct {
-	position       dimensionValues
-	personalBest   dimensionValues
-	globalBest     dimensionValues
-	velocity       dimensionValues
+	position       *mat.Dense
+	personalBest   *mat.Dense
+	globalBest     *mat.Dense
+	velocity       *mat.Dense
 	velocityWeight VelocityWeight
 }
 
 type VelocityWeight struct {
-	weight                     dimensionValues
-	personalBestVelocityWeight dimensionValues
-	globalBestVelocityWeight   dimensionValues
+	weight                     *mat.Dense
+	personalBestVelocityWeight *mat.Dense
+	globalBestVelocityWeight   *mat.Dense
 }
 
-func (d dimensionValues) subtractWith(refD dimensionValues) dimensionValues {
-	var subtracted dimensionValues = make(dimensionValues, len(d))
-	for i := range d {
-		subtracted[i] = d[i] - refD[i]
-	}
-	return subtracted
+func newDimensionDense(dimension int, data []float64) *mat.Dense {
+	return mat.NewDense(dimension, 1, data)
 }

@@ -1,8 +1,10 @@
 package swarm
 
+import "gonum.org/v1/gonum/mat"
+
 type Swarm struct {
 	Particles      []Particle
-	GlobalBest     dimensionValues
+	GlobalBest     mat.Dense
 	VelocityWeight VelocityWeight
 }
 
