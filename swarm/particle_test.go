@@ -21,7 +21,6 @@ func TestSubtractFunction(t *testing.T) {
 		dimension:      dimensions,
 		position:       newDimensionDense(dimensions, []float64{3.0, 2.0, 1}),
 		personalBest:   newDimensionDense(dimensions, []float64{1.0, 1.0, 1}),
-		globalBest:     newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
 		velocity:       newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
 		velocityWeight: velocityWeight,
 	}
@@ -47,7 +46,6 @@ func TestCalculateVelocity(t *testing.T) {
 		dimension:      dimensions,
 		position:       newDimensionDense(dimensions, []float64{3.0, 2.0, 1}),
 		personalBest:   newDimensionDense(dimensions, []float64{1.0, 1.0, 1}),
-		globalBest:     newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
 		velocity:       newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
 		velocityWeight: velocityWeight,
 	}
@@ -72,7 +70,6 @@ func TestCalculatePBestVelocity(t *testing.T) {
 		dimension:      dimensions,
 		position:       newDimensionDense(dimensions, []float64{3.0, 2.0, 1}),
 		personalBest:   newDimensionDense(dimensions, []float64{1.0, 1.0, 1}),
-		globalBest:     newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
 		velocity:       newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
 		velocityWeight: velocityWeight,
 	}
@@ -97,12 +94,13 @@ func TestCalculateGBestVelocity(t *testing.T) {
 		dimension:      dimensions,
 		position:       newDimensionDense(dimensions, []float64{3.0, 2.0, 1}),
 		personalBest:   newDimensionDense(dimensions, []float64{1.0, 1.0, 1}),
-		globalBest:     newDimensionDense(dimensions, []float64{1.0, 2.0, 0}),
 		velocity:       newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
 		velocityWeight: velocityWeight,
 	}
 
-	result := particle.calculateGlobalBestVelocity()
+	globalBest := newDimensionDense(dimensions, []float64{1.0, 2.0, 0})
+
+	result := particle.calculateGlobalBestVelocity(globalBest)
 	if !reflect.DeepEqual(expectedResult, result) {
 		t.Error("result and expectedresult are not the sames")
 	}
@@ -122,12 +120,13 @@ func TestCalculateTotalVelocity(t *testing.T) {
 		dimension:      dimensions,
 		position:       newDimensionDense(dimensions, []float64{3.0, 2.0, 1}),
 		personalBest:   newDimensionDense(dimensions, []float64{1.0, 1.0, 1}),
-		globalBest:     newDimensionDense(dimensions, []float64{1.0, 2.0, 0}),
 		velocity:       newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
 		velocityWeight: velocityWeight,
 	}
 
-	result := particle.calculateTotalVelocity()
+	globalBest := newDimensionDense(dimensions, []float64{1.0, 2.0, 0})
+
+	result := particle.calculateTotalVelocity(globalBest)
 	if !reflect.DeepEqual(expectedResult, result) {
 		t.Error("result and expectedresult are not the sames")
 	}

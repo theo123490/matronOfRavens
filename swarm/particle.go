@@ -8,7 +8,6 @@ type Particle struct {
 	dimension      int
 	position       *mat.Dense
 	personalBest   *mat.Dense
-	globalBest     *mat.Dense
 	velocity       *mat.Dense
 	velocityWeight VelocityWeight
 }
@@ -35,13 +34,13 @@ func (p Particle) calculatePersonalBestVelocity() *mat.Dense {
 	return p.calculateBestVelocity(p.personalBest, p.velocityWeight.personalBestVelocityWeight)
 }
 
-func (p Particle) calculateGlobalBestVelocity() *mat.Dense {
-	return p.calculateBestVelocity(p.globalBest, p.velocityWeight.globalBestVelocityWeight)
+func (p Particle) calculateGlobalBestVelocity(globalBest *mat.Dense) *mat.Dense {
+	return p.calculateBestVelocity(globalBest, p.velocityWeight.globalBestVelocityWeight)
 }
 
-func (p Particle) calculateTotalVelocity() *mat.Dense {
+func (p Particle) calculateTotalVelocity(globalBest *mat.Dense) *mat.Dense {
 	totalVelocity := newDimensionDense(p.dimension, nil)
-	totalVelocity.Add(p.calculatePersonalBestVelocity(), p.calculateGlobalBestVelocity())
+	totalVelocity.Add(p.calculatePersonalBestVelocity(), p.calculateGlobalBestVelocity(globalBest))
 	totalVelocity.Add(totalVelocity, p.velocity)
 	return totalVelocity
 }
