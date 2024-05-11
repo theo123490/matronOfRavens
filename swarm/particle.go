@@ -5,11 +5,12 @@ import (
 )
 
 type Particle struct {
-	dimension      int
-	position       *mat.Dense
-	personalBest   *mat.Dense
-	velocity       *mat.Dense
-	velocityWeight VelocityWeight
+	dimension         int
+	position          *mat.Dense
+	personalBest      *mat.Dense
+	personalBestValue float64
+	velocity          *mat.Dense
+	velocityWeight    VelocityWeight
 }
 
 type VelocityWeight struct {
