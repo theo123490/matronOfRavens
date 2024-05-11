@@ -164,9 +164,39 @@ func TestCalculatePositionValue(t *testing.T) {
 	particleFitnessFunction := func(position *mat.Dense) float64 {
 		return position.RawMatrix().Data[0] + position.RawMatrix().Data[1]
 	}
-	// globalBest := newDimensionDense(dimensions, []float64{1.0, 2.0, 0})
 
 	result := particle.calculatePositionValue(particleFitnessFunction)
+	if !reflect.DeepEqual(expectedResult, result) {
+		fmt.Printf("result %v \n", result)
+		fmt.Printf("expected Result %v \n", expectedResult)
+		t.Error("result and expectedresult are not the sames")
+	}
+}
+
+func TestUpdateBestValue(t *testing.T) {
+	var dimensions int = 3
+	var expectedResult float64 = 5
+
+	var velocityWeight VelocityWeight = VelocityWeight{
+		weight:                     newDimensionDense(dimensions, []float64{1.0, 2.0, 2}),
+		personalBestVelocityWeight: newDimensionDense(dimensions, []float64{1.0, 2.0, 2}),
+		globalBestVelocityWeight:   newDimensionDense(dimensions, []float64{2.0, 3.0, 2}),
+	}
+
+	var particle Particle = Particle{
+		dimension:      dimensions,
+		position:       newDimensionDense(dimensions, []float64{3.0, 2.0, 1}),
+		personalBest:   newDimensionDense(dimensions, []float64{1.0, 1.0, 1}),
+		velocity:       newDimensionDense(dimensions, []float64{1.0, 2.0, 1}),
+		velocityWeight: velocityWeight,
+	}
+
+	particleFitnessFunction := func(position *mat.Dense) float64 {
+		return position.RawMatrix().Data[0] + position.RawMatrix().Data[1]
+	}
+
+	particle.updateBestValue(particleFitnessFunction)
+	result := particle.personalBestValue
 	if !reflect.DeepEqual(expectedResult, result) {
 		fmt.Printf("result %v \n", result)
 		fmt.Printf("expected Result %v \n", expectedResult)

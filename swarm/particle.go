@@ -51,3 +51,11 @@ func (p Particle) calculateTotalVelocity(globalBest *mat.Dense) *mat.Dense {
 func (p Particle) calculatePositionValue(fitnessFn FitnessFunction) float64 {
 	return fitnessFn(p.position)
 }
+
+func (p *Particle) updateBestValue(fitnessFn FitnessFunction) {
+	currentParticleValue := p.calculatePositionValue(fitnessFn)
+	if currentParticleValue >= p.personalBestValue {
+		p.personalBest = p.position
+		p.personalBestValue = currentParticleValue
+	}
+}
