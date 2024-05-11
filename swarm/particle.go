@@ -19,6 +19,8 @@ type VelocityWeight struct {
 	globalBestVelocityWeight   *mat.Dense
 }
 
+type FitnessFunction func(*mat.Dense) float64
+
 func newDimensionDense(dimension int, data []float64) *mat.Dense {
 	return mat.NewDense(dimension, 1, data)
 }
@@ -44,4 +46,8 @@ func (p Particle) calculateTotalVelocity(globalBest *mat.Dense) *mat.Dense {
 	totalVelocity.Add(p.calculatePersonalBestVelocity(), p.calculateGlobalBestVelocity(globalBest))
 	totalVelocity.Add(totalVelocity, p.velocity)
 	return totalVelocity
+}
+
+func (p Particle) calculatePositionValue(fitnessFn FitnessFunction) float64 {
+	return fitnessFn(p.position)
 }
