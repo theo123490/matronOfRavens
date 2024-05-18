@@ -36,3 +36,10 @@ func (s *Swarm) UpdateGlobalBest() error {
 	}
 	return nil
 }
+
+func (s *Swarm) UpdateParticleBest(fitnessFn FitnessFunction) error {
+	for i, _ := range s.Particles {
+		s.Particles[i].updateBestValue(fitnessFn)
+	}
+	return nil
+}
